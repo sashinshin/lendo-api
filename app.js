@@ -7,7 +7,6 @@ const { createApplicationDb, updateApplicationDb, getAllDb, getByStatusDb } = re
 const app = Express();
 app.use(bodyParser.json());
 
-// Helper functions
 const createJob = async (data) => {
     try {
         const res = await axios.post(`${BANK_PARTNER_URL}/api/applications`, data);
@@ -40,7 +39,6 @@ const updatePoller = async (id) => {
     };
 };
 
-// Create application
 app.post('/api/applications', async (req, res) => {
     const application = await createJob(req.body);
 
@@ -54,19 +52,24 @@ app.post('/api/applications', async (req, res) => {
     return res.status(400).send(application.error);
 });
 
-
-// Get applications
 app.get('/api/applications', async (req, res) => {
-    const applications = await getAllDb();
+    const status = req.query.status;
+    let applications;
+    if (status === 'rejected' || status === 'completed' || status === 'pending') {
+        console.log('in rejected etc');
+        applications = await getByStatusDb(status);
+    } else {
+        console.log('in all');
+        applications = await getAllDb();
+    };
     return res.status(200).send(applications);
 });
 
-app.get('/api/applications/:status', async (req, res) => {
-    const applications = await getByStatusDb(req.params.status);
+app.get('/api/applications/:id', async (req, res) => {
+    const applications = await getByIdDb(req.params.id);
     return res.status(200).send(applications);
 });
 
-// create application endpoint and poll it
 module.exports = app;
 
 // decouple http request and queing system (rabbitmq?)

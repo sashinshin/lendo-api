@@ -33,18 +33,11 @@ describe('API tests', () => {
 
         test('Get all applications', async () => {
             const response = await request(app).get('/api/applications');
-            console.log(response.body);
-            expect(response.body).toBeDefined();
+            expect(response.body[0].first_name).toEqual('John');
         });
     
         test('Get application by status', async () => {
-            const result = {    
-                id: "e22a30af-55bf-4e1a-a186-850fb6eb49da",
-                status: "rejected",
-                first_name: "John",
-                last_name: "Doe",
-            }
-            const response = await request(app).get('/api/applications/rejected');
+            const response = await request(app).get('/api/applications?status=rejected');
             expect(response.body[0].status).toEqual('rejected');
         });
 
