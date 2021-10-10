@@ -17,13 +17,13 @@ describe('API tests', () => {
                 first_name: "John",
                 last_name: "Doe",
             }
-            const response = await request(app).post('/api/application').send(data);
+            const response = await request(app).post('/api/applications').send(data);
             expect(response.statusCode).toBe(200);
         });
 
         test('Should respond with 400 status code', async () => {
             const data = { status: 'error' };
-            const response = await request(app).post('/api/application').send(data);
+            const response = await request(app).post('/api/applications').send(data);
             expect(response.statusCode).toBe(400);
         });
 
@@ -32,7 +32,7 @@ describe('API tests', () => {
     describe('Test GET', () => {
 
         test('Get all applications', async () => {
-            const response = await request(app).get('/api/application');
+            const response = await request(app).get('/api/applications');
             console.log(response.body);
             expect(response.body).toBeDefined();
         });
@@ -44,7 +44,7 @@ describe('API tests', () => {
                 first_name: "John",
                 last_name: "Doe",
             }
-            const response = await request(app).get('/api/application/rejected');
+            const response = await request(app).get('/api/applications/rejected');
             expect(response.body[0].status).toEqual('rejected');
         });
 

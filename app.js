@@ -1,16 +1,16 @@
 const Express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const { BANK_PARTNER_URL } = require('./config.js');
 const { createApplicationDb, updateApplicationDb, getAllDb, getByStatusDb } = require('./database/models/dbHelpers.js');
 
 const app = Express();
 app.use(bodyParser.json());
 
-
 // Helper functions
 const createJob = async (data) => {
     try {
-        const res = await axios.post(`http://localhost:8000/api/applications`, data);
+        const res = await axios.post(`${BANK_PARTNER_URL}/api/applications`, data);
         return res.data;
 
     } catch (error) {
@@ -20,7 +20,7 @@ const createJob = async (data) => {
 
 const getJob = async (id) => {
     try {
-        const res = await axios.get(`http://localhost:8000/api/jobs?application_id=${id}`);
+        const res = await axios.get(`${BANK_PARTNER_URL}/api/jobs?application_id=${id}`);
         return res.data;
 
     } catch (error) {
