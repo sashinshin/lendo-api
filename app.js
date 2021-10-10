@@ -54,12 +54,11 @@ app.post('/api/applications', async (req, res) => {
 
 app.get('/api/applications', async (req, res) => {
     const status = req.query.status;
+    
     let applications;
     if (status === 'rejected' || status === 'completed' || status === 'pending') {
-        console.log('in rejected etc');
         applications = await getByStatusDb(status);
     } else {
-        console.log('in all');
         applications = await getAllDb();
     };
     return res.status(200).send(applications);
