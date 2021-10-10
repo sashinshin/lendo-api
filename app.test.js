@@ -41,6 +41,16 @@ describe('API tests', () => {
             expect(response.body[0].status).toEqual('rejected');
         });
 
+        test('Get specific application', async () => {
+            const response = await request(app).get('/api/applications/e22a30af-55bf-4e1a-a186-850fb6eb49da');
+            expect(response.body[0].id).toEqual('e22a30af-55bf-4e1a-a186-850fb6eb49da');
+        });
+
+        test('Application not found, should 404', async () => {
+            const response = await request(app).get('/api/applications/e23a30af-55bf-4e1a-a186-850fb6eb49da');
+            expect(response.statusCode).toEqual(404);
+        });
+
     });
 
 });

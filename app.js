@@ -2,7 +2,7 @@ const Express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const { BANK_PARTNER_URL } = require('./config.js');
-const { createApplicationDb, updateApplicationDb, getAllDb, getByStatusDb } = require('./database/models/dbHelpers.js');
+const { createApplicationDb, updateApplicationDb, getAllDb, getByIdDb, getByStatusDb } = require('./database/models/dbHelpers.js');
 
 const app = Express();
 app.use(bodyParser.json());
@@ -66,11 +66,11 @@ app.get('/api/applications', async (req, res) => {
 });
 
 app.get('/api/applications/:id', async (req, res) => {
-    const applications = await getByIdDb(req.params.id);
-    return res.status(200).send(applications);
+    const application = await getByIdDb(req.params.id);
+    if (application.length > 0) {
+        return res.status(200).send(application);
+    }
+    return res.sendStatus(404);
 });
 
 module.exports = app;
-
-// decouple http request and queing system (rabbitmq?)
-// crate application, send to bank api, keep polling, send back
